@@ -6,6 +6,7 @@ public class Percolation {
 	private int row, col;
 	private int top, bottom;
 	private WeightedQuickUnionUF siteUnion;
+	private WeightedQuickUnionUF backUnion;
 	
 	// create n-by-n grid, with all sites blocked
 	public Percolation(int n) {  
@@ -18,36 +19,42 @@ public class Percolation {
 		bottom =n*n+1; 
 		site = new boolean[row+1][col+1];
 		siteUnion = new WeightedQuickUnionUF(n*n+2);
+		backUnion = new WeightedQuickUnionUF(n*n+1);
 	}
 	// open site (row, col) if it is not open already
 	public void open(int i, int j) {
 		if (i<1 || i>row || j<1 || j>col) throw new IllegalArgumentException();
-		int index = i*(row-1)+j;
+		int index = (i-1)*row+j;
 		if (!site[i][j]) {
 			site[i][j]=true;
 			//top
 			if (i == 1) {
 				siteUnion.union(index, top);
+				backUnion.union(index, top);
 			}
 			//bottom
 			if (i ==row) {
 				siteUnion.union(index, bottom);
 			}
-			//left
+			//up
 			if (i >1 && isOpen(i-1, j)) {
 				siteUnion.union(index, index-col);
-			}
-			//right
-			if (i <row && isOpen(i+1, j)) {
-				siteUnion.union(index, index+col);
+				backUnion.union(index, index-col);
 			}
 			//down
+			if (i <row && isOpen(i+1, j)) {
+				siteUnion.union(index, index+col);
+				backUnion.union(index, index+col);
+			}
+			//left
 			if (j>1 && isOpen(i, j-1)) {
 				siteUnion.union(index, index-1);
+				backUnion.union(index, index-1);
 			}
-			//up
+			//right
 			if (j<col && isOpen(i, j+1)) {
 				siteUnion.union(index, index+1);
+				backUnion.union(index, index+1);
 			}			
 		}		
 		
@@ -61,8 +68,8 @@ public class Percolation {
 	// is site (row, col) full?
     public boolean isFull(int i, int j) {
 		if (i<1 || i>row || j<1 || j>col) throw new IllegalArgumentException();
-		int index = i*(row-1)+j;
-		return siteUnion.connected(index, top);
+		int index = row*(i-1)+j;
+		return backUnion.connected(index, top);
     } 
     
     // number of open sites
