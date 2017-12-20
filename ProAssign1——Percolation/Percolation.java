@@ -1,8 +1,8 @@
-//import edu.princeton.cs.algs4.StdRandom;
+// import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-	private boolean[][] site;
+    private boolean[][] site;
 	private final int row, col;
 	private final int top, bottom;
 	private final WeightedQuickUnionUF siteUnion;
@@ -21,10 +21,12 @@ public class Percolation {
 		siteUnion = new WeightedQuickUnionUF(n*n+2);
 		backUnion = new WeightedQuickUnionUF(n*n+1);
 	}
+	
 	// change index from 2D to 1D
-	public int indexTo1D(int i, int j) {
+	private int indexTo1D(int i, int j) {
 		return (i-1)*row+j;
 	}
+	
 	// open site (row, col) if it is not open already
 	public void open(int i, int j) {
 		if (i < 1 || i > row || j < 1 || j > col) throw new IllegalArgumentException();
@@ -80,9 +82,9 @@ public class Percolation {
     // number of open sites
     public int numberOfOpenSites() {
     	int cnt = 0;
-    	for (int i=1; i<row+1; i++) {
-    		for (int j=1; j<col+1; j++) {
-    			if (isOpen(i, j)) {cnt++;}
+    	for (int i = 1; i < row+1; i++) {
+    		for (int j = 1; j < col+1; j++) {
+    			if (isOpen(i, j)) cnt++;
     		}
     	}
     	return cnt;
@@ -93,31 +95,6 @@ public class Percolation {
     }             
 
     public static void main(String[] args) {    // test client (optional)
-//    	int T = 10000;
-//    	double prob = 0.0;
-//    	double sum = 0.0;
-//    	System.out.println(T);
-//    	for (int cycle=0; cycle<T; cycle++) {
-//    		Percolation per = new Percolation(2);
-////    		System.out.println(cycle);
-//    		while (per.numberOfOpenSites()<per.row*per.col && !per.percolates()) {
-////    			System.out.println("Begin!");
-//    			int row, col;
-//    			   do {
-//    				   row = StdRandom.uniform(1, per.row+1);
-//    				   col = StdRandom.uniform(1, per.col+1);
-//    			   }while (per.isOpen(row, col));
-//				
-//				per.open(row, col);
-////				System.out.println("cycle-->"+cycle+" row:"+row+" col:"+col+" num:"+per.numberOfOpenSites());
-//    		}
-//    		
-//    		prob = per.numberOfOpenSites()/(per.row*per.col+0.1);
-////    		System.out.println(prob+"    "+per.percolates());
-//    		sum += prob;
-//    	}
-//    	System.out.println("Finish!");
-//    	System.out.println(sum/T);	
 	}
 }
 
